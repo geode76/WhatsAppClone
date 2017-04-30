@@ -5,12 +5,14 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "isolatedModules": false,
     "lib": [
       "dom",
       "es2015"
     ],
     "module": "commonjs",
     "moduleResolution": "node",
+    "removeComments": false,
     "sourceMap": true,
     "target": "es5",
     "skipLibCheck": true,
