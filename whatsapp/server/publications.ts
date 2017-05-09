@@ -3,19 +3,16 @@ import { Mongo } from 'meteor/mongo';
 import { Chats, Messages, Users } from '../imports/collections';
 import { Chat, Message, User } from '../imports/models';
  
-Meteor.publish('users', function(): Mongo.Cursor<User> {
+Meteor.publishComposite('users', function(
+  pattern: string
+): PublishCompositeConfig<User> {
   if (!this.userId) {
     return;
   }
  
-  return Users.collection.find({}, {
-    fields: {
-      profile: 1
-    }
-  });
-});
- 
-Meteor.publish('messages', function(chatId: string): Mongo.Cursor<Message> {
+Meteor.publish('messages', function(
+  chatId: string,
+  messagesBatchCounter: number): Mongo.Cursor<Message> {
   if (!this.userId || !chatId) {
     return;
   }
@@ -23,7 +20,8 @@ Meteor.publish('messages', function(chatId: string): Mongo.Cursor<Message> {
   return Messages.collection.find({
     chatId
   }, {
-    sort: { createdAt: -1 }
+    sort: { createdAt: -1 },
+    limit: 30 * messagesBatchCounter
   });
 });
  
